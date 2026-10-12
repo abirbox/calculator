@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculator</title>
+  <meta name="description" content="A modern calculator with scientific mode, memory, history, and themes." />
+  <meta name="theme-color" content="#0b0e14" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AE%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="calculator" aria-label="Calculator">
+      <header class="top-bar">
+        <span class="brand">Calculator</span>
+        <div class="top-actions">
+          <button type="button" class="chip" id="angleToggle" data-action="angle" title="Toggle degrees / radians">DEG</button>
+          <button type="button" class="chip" id="sciToggle" data-action="sci" title="Scientific mode" aria-expanded="false">fx</button>
+          <button type="button" class="icon-btn" id="themeToggle" data-action="theme" title="Toggle light / dark theme" aria-label="Toggle theme">☀️</button>
+          <button type="button" class="icon-btn" id="historyToggle" data-action="hist-toggle" title="History" aria-label="Toggle history">🕘</button>
+        </div>
+      </header>
+
+      <div class="display">
+        <div class="display-top">
+          <span class="badge" id="memoryIndicator" hidden>M</span>
+          <div class="expression" id="expression" aria-label="Expression"></div>
+          <button type="button" class="icon-btn copy-btn" data-action="copy" title="Copy result to clipboard" aria-label="Copy result to clipboard">⧉</button>
+        </div>
+        <div class="result" id="result" aria-live="polite">0</div>
+      </div>
+
+      <div class="sci-panel" id="sciPanel" hidden>
+        <button type="button" class="btn btn--sci" data-action="func" data-value="sin">sin</button>
+        <button type="button" class="btn btn--sci" data-action="func" data-value="cos">cos</button>
+        <button type="button" class="btn btn--sci" data-action="func" data-value="tan">tan</button>
+        <button type="button" class="btn btn--sci" data-action="func" data-value="ln">ln</button>
+        <button type="button" class="btn btn--sci" data-action="func" data-value="log">log</button>
+        <button type="button" class="btn btn--sci" data-action="func" data-value="√">√</button>
+        <button type="button" class="btn btn--sci" data-action="square" title="Square">x²</button>
+        <button type="button" class="btn btn--sci" data-action="op" data-value="^" title="Power">xʸ</button>
+        <button type="button" class="btn btn--sci" data-action="const" data-value="π">π</button>
+        <button type="button" class="btn btn--sci" data-action="const" data-value="e">e</button>
+      </div>
+
+      <div class="memory-row" role="group" aria-label="Memory functions">
+        <button type="button" class="btn btn--mem" data-action="mc" title="Memory clear">MC</button>
+        <button type="button" class="btn btn--mem" data-action="mr" title="Memory recall">MR</button>
+        <button type="button" class="btn btn--mem" data-action="mplus" title="Add to memory">M+</button>
+        <button type="button" class="btn btn--mem" data-action="mminus" title="Subtract from memory">M−</button>
+      </div>
+
+      <div class="pad">
+        <button type="button" class="btn btn--util" data-action="ce" title="Clear entry (Delete)">CE</button>
+        <button type="button" class="btn btn--util" data-action="back" title="Backspace" aria-label="Backspace">⌫</button>
+        <button type="button" class="btn btn--util" data-action="lparen" title="Open parenthesis">(</button>
+        <button type="button" class="btn btn--util" data-action="rparen" title="Close parenthesis">)</button>
+
+        <button type="button" class="btn btn--util btn--danger" data-action="ac" title="All clear (Esc)">AC</button>
+        <button type="button" class="btn btn--util" data-action="sign" title="Toggle positive / negative">±</button>
+        <button type="button" class="btn btn--util" data-action="percent" title="Percent">%</button>
+        <button type="button" class="btn btn--op" data-action="op" data-value="/" title="Divide">÷</button>
+
+        <button type="button" class="btn btn--num" data-action="digit" data-value="7">7</button>
+        <button type="button" class="btn btn--num" data-action="digit" data-value="8">8</button>
+        <button type="button" class="btn btn--num" data-action="digit" data-value="9">9</button>
+        <button type="button" class="btn btn--op" data-action="op" data-value="*" title="Multiply">×</button>
+
+        <button type="button" class="btn btn--num" data-action="digit" data-value="4">4</button>
+        <button type="button" class="btn btn--num" data-action="digit" data-value="5">5</button>
+        <button type="button" class="btn btn--num" data-action="digit" data-value="6">6</button>
+        <button type="button" class="btn btn--op" data-action="op" data-value="-" title="Subtract">−</button>
+
+        <button type="button" class="btn btn--num" data-action="digit" data-value="1">1</button>
+        <button type="button" class="btn btn--num" data-action="digit" data-value="2">2</button>
+        <button type="button" class="btn btn--num" data-action="digit" data-value="3">3</button>
+        <button type="button" class="btn btn--op" data-action="op" data-value="+" title="Add">+</button>
+
+        <button type="button" class="btn btn--num" data-action="digit" data-value="0">0</button>
+        <button type="button" class="btn btn--num" data-action="dot" title="Decimal point">.</button>
+        <button type="button" class="btn btn--equals" data-action="equals" title="Equals (Enter)">=</button>
+      </div>
+
+      <p class="hint">Esc — clear all&ensp;·&ensp;Enter — equals&ensp;·&ensp;⌫ — backspace</p>
+    </section>
+
+    <aside class="history" id="historyPanel" aria-label="Calculation history">
+      <div class="history-header">
+        <h2>History</h2>
+        <button type="button" class="chip chip--ghost" data-action="hist-clear">Clear</button>
+      </div>
+      <ul class="history-list" id="historyList"></ul>
+      <p class="history-empty" id="historyEmpty">No calculations yet</p>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <p class="credit">Built by Abir.</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
